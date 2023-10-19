@@ -58,10 +58,8 @@ For the dataset we are using the face emotion recognition dataset from kaggle : 
 
 ## Screenshots
 
-<img src="https://drive.google.com/file/d/1bahiOAXZpva78oTdvogN-YTd11oSlp8-/view?usp=share_link" alt="Demo">
-<img src="https://drive.google.com/file/d/1_Qa-3c9CULylmPs15m-p01fDUcjwCMfG/view?usp=share_link" alt="Demo">
-
-
-
+![homepage](https://github.com/TyrellF/Face_Emotion_Recogn/assets/100986495/8dcb2162-a30a-47da-a68d-e0055a988357)
+![demo1](https://github.com/TyrellF/Face_Emotion_Recogn/assets/100986495/6b9feafb-d447-4b7b-a6af-d6c7cc947123)
+![demo2](https://github.com/TyrellF/Face_Emotion_Recogn/assets/100986495/f2555140-83e5-46be-8d3e-9801698c8668)
 
 
