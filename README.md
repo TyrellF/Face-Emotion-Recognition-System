@@ -5,8 +5,6 @@
     <br />
     <br />
     <a href="https://drive.google.com/file/d/1dP3iWlTkL2vfRMH-0PQaBz-X7isOoz9a/view?usp=share_link">View Video</a>
-    ·
-<!--     <a href="https://movie-recommender-system-ug-project.streamlit.app/">View Deployment</a> -->
   </p>
 </div>
 
@@ -51,8 +49,8 @@ By completing this project, you'll not only develop a functional emotion detecti
 - `images/`: Store image files of emotions(happy,sad etc).
 - `static/`: Contains HTML, CSS, and JavaScript files for the web application.
 - `trainmodel/`: Jupyter notebook file for data preprocessing and algorithm implementation.
-- `app.py`: The main python application file.
-- `requirements.txt`: Lists the required Python packages.
+- `app.py/`: The main python application file.
+- `requirements.txt/`: Lists the required Python packages.
 
 ## Data Sources
 
@@ -60,8 +58,10 @@ For the dataset we are using the face emotion recognition dataset from kaggle : 
 
 ## Screenshots
 
-![Demo1]([direct_image_url](https://drive.google.com/file/d/1bahiOAXZpva78oTdvogN-YTd11oSlp8-/view?usp=share_link)https://drive.google.com/file/d/1bahiOAXZpva78oTdvogN-YTd11oSlp8-/view?usp=share_link)
-![Demo2]([direct_image_url](https://drive.google.com/file/d/1_Qa-3c9CULylmPs15m-p01fDUcjwCMfG/view?usp=share_link)https://drive.google.com/file/d/1_Qa-3c9CULylmPs15m-p01fDUcjwCMfG/view?usp=share_link)
+<img src="https://drive.google.com/file/d/1bahiOAXZpva78oTdvogN-YTd11oSlp8-/view?usp=share_link" alt="Demo">
+<img src="https://drive.google.com/file/d/1_Qa-3c9CULylmPs15m-p01fDUcjwCMfG/view?usp=share_link" alt="Demo">
+
+
 
 
 
