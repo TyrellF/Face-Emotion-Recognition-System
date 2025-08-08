@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Basic -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>TECH HUNTERS - AI Emotion Detection</title>
+	<meta name="keywords" content="Emotion Detection, AI, Machine Learning, Facial Recognition, Computer Vision" />
+	<meta name="description" content="Advanced AI-powered facial emotion recognition system using deep learning">
+	<meta name="author" content="Tech Hunters Team">
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+	<!-- Mobile Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+	<!-- Web Fonts  -->
+	<link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800%7CShadows+Into+Light%7CPlayfair+Display:400&amp;display=swap" rel="stylesheet" type="text/css">
+	<!-- Vendor CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/animate/animate.compat.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/simple-line-icons/css/simple-line-icons.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/owl.carousel/assets/owl.carousel.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/owl.carousel/assets/owl.theme.default.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.min.css') }}">
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme-elements.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme-blog.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme-shop.css') }}">
+	<!-- Skin CSS -->
+	<link id="skinCSS" rel="stylesheet" href="{{ url_for('static', filename='css/skins/default.css') }}">
+	<!-- Theme Custom CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+	<!-- Head Libs -->
+	<script src="{{ url_for('static', filename='vendor/modernizr/modernizr.min.js') }}"></script>
+	
+	<!-- Custom Styles for Enhanced UI -->
+	<style>
+		.hero-section {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 80vh;
+			display: flex;
+			align-items: center;
+		}
+		
+		.emotion-card {
+			background: rgba(255, 255, 255, 0.1);
+			backdrop-filter: blur(10px);
+			border-radius: 20px;
+			padding: 2rem;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+		}
+		
+		.emotion-badge {
+			display: inline-block;
+			padding: 0.5rem 1rem;
+			background: rgba(255, 255, 255, 0.2);
+			border-radius: 25px;
+			margin: 0.25rem;
+			color: white;
+			font-size: 0.9rem;
+		}
+		
+		.feature-icon {
+			font-size: 3rem;
+			color: #764ba2;
+			margin-bottom: 1rem;
+		}
+		
+		.team-member {
+			background: white;
+			border-radius: 15px;
+			padding: 1.5rem;
+			margin: 1rem 0;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+			transition: transform 0.3s ease;
+		}
+		
+		.team-member:hover {
+			transform: translateY(-5px);
+		}
+		
+		.start-button {
+			background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+			border: none;
+			padding: 1rem 2rem;
+			font-size: 1.2rem;
+			font-weight: bold;
+			border-radius: 50px;
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+		}
+		
+		.start-button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+		}
+		
+		.tech-badge {
+			background: #764ba2;
+			color: white;
+			padding: 0.3rem 0.8rem;
+			border-radius: 20px;
+			font-size: 0.8rem;
+			margin: 0.2rem;
+			display: inline-block;
+		}
+		
+		.section-divider {
+			height: 2px;
+			background: linear-gradient(90deg, transparent, #764ba2, transparent);
+			margin: 3rem 0;
+		}
+		
+		/* Global body styling to ensure header visibility */
+		body {
+			background: #f8f9fa;
+		}
+		
+		.main {
+			background: white;
+			margin-top: 0;
+		}
+		
+		/* Enhanced Header Styles */
+		.header-enhanced {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+			position: relative;
+			overflow: hidden;
+			border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+			z-index: 1000;
+			padding: 1rem 0;
+			width: 100%;
+		}
+		
+		.header-container {
+			width: 100%;
+			max-width: 100%;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+		
+		.header-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: nowrap;
+			gap: 0.5rem;
+		}
+		
+		.header-column {
+			display: flex;
+			align-items: center;
+			flex-shrink: 0;
+		}
+		
+		.header-column:first-child {
+			flex: 0 0 auto;
+		}
+		
+		.header-column:nth-child(2) {
+			flex: 1;
+			justify-content: center;
+			min-width: 0;
+		}
+		
+		.header-column:last-child {
+			flex: 0 0 auto;
+		}
+		
+		.header-enhanced::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+			pointer-events: none;
+		}
+		
+		.header-enhanced::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 1px;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+		}
+		
+		.logo-enhanced {
+			font-family: 'Poppins', sans-serif;
+			font-weight: 700;
+			font-size: 2rem;
+			color: white !important;
+			text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+			position: relative;
+			padding: 1rem 1.5rem;
+			background: rgba(255, 255, 255, 0.1);
+			border-radius: 15px;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			margin-right: 2rem;
+		}
+		
+		.logo-enhanced::after {
+			content: '';
+			position: absolute;
+			bottom: -5px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 80%;
+			height: 3px;
+			background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1);
+			border-radius: 2px;
+		}
+		
+		.nav-enhanced {
+			background: rgba(255, 255, 255, 0.15);
+			backdrop-filter: blur(10px);
+			border-radius: 25px;
+			padding: 0.8rem 2rem;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			margin: 0 1rem;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.nav-enhanced .nav {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.nav-enhanced .nav-link {
+			color: white !important;
+			font-weight: 500;
+			margin: 0;
+			padding: 0.7rem 1.2rem;
+			border-radius: 20px;
+			transition: all 0.3s ease;
+			position: relative;
+			text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+			text-decoration: none;
+			white-space: nowrap;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+		
+		.nav-enhanced .nav-link:hover {
+			background: rgba(255, 255, 255, 0.25);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+		}
+		
+		.tagline-enhanced {
+			color: white !important;
+			font-size: 1rem;
+			font-weight: 500;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+			display: flex;
+			align-items: center;
+			background: rgba(255, 255, 255, 0.1);
+			padding: 0.7rem 1.2rem;
+			border-radius: 20px;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			margin-right: 0.8rem;
+			white-space: nowrap;
+			flex-shrink: 0;
+		}
+		
+		.tagline-enhanced i {
+			color: #4ECDC4 !important;
+			margin-right: 0.5rem;
+			font-size: 1.3rem;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		}
+		
+		.header-cta {
+			background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+			border: 2px solid rgba(255, 255, 255, 0.3);
+			color: white !important;
+			padding: 0.8rem 1.8rem;
+			border-radius: 25px;
+			font-weight: 600;
+			text-decoration: none;
+			transition: all 0.3s ease;
+			display: inline-flex;
+			align-items: center;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+			margin-left: 0.8rem;
+			white-space: nowrap;
+			flex-shrink: 0;
+		}
+		
+		.header-cta:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+			color: white !important;
+			text-decoration: none;
+			filter: brightness(1.1);
+		}
+		
+
+		
+		/* Simplified responsive layout */
+		.header-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: nowrap;
+			gap: 1rem;
+			width: 100%;
+		}
+		
+		.header-column {
+			display: flex;
+			align-items: center;
+		}
+		
+		.header-column:first-child {
+			flex: 0 0 auto;
+		}
+		
+		.header-column:nth-child(2) {
+			flex: 1;
+			justify-content: center;
+		}
+		
+		.header-column:last-child {
+			flex: 0 0 auto;
+		}
+		
+		/* Basic mobile responsiveness */
+		@media (max-width: 768px) {
+			.header-row {
+				flex-wrap: wrap;
+				text-align: center;
+			}
+			
+			.header-column:nth-child(2) {
+				order: 3;
+				flex: 1 1 100%;
+				margin-top: 1rem;
+			}
+			
+			.nav-enhanced {
+				width: 100%;
+				margin: 0;
+			}
+			
+			.nav-enhanced .nav {
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+			
+			.tagline-enhanced {
+				display: none !important;
+			}
+		}
+	</style>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-SEP1T05Z5V"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+	gtag('config', 'G-SEP1T05Z5V');
+	</script>
+</head>
+
+<body data-plugin-page-transition>
+	<div class="body">
+		<header id="header" class="header-enhanced" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': false, 'stickyStartAt': 30, 'stickyHeaderContainerHeight': 80}">
+			<div class="header-body border-top-0" style="background-color: rgba(0,0,0,0.7);">
+				<div class="header-container container container-xl-custom">
+					<div class="header-row py-3">
+						<div class="header-column">
+							<div class="header-row">
+								<div class="header-logo">
+									<div class="logo-enhanced d-flex align-items-center">
+										<i class="fas fa-brain me-3" style="font-size: 2.5rem; color: #4ECDC4;"></i>
+										<div>
+											<div style="font-size: 2rem; line-height: 1;">TECH HUNTERS</div>
+											<div style="font-size: 0.8rem; color: rgba(255,255,255,0.8); font-weight: 400;">AI Solutions</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div >
+							<nav class="nav-enhanced">
+								<ul class="nav">
+									<li class="nav-item">
+										<a class="nav-link" href="#features">
+											<i class="fas fa-cogs me-1"></i>Features
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#how-it-works">
+											<i class="fas fa-play-circle me-1"></i>How It Works
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#team">
+											<i class="fas fa-users me-1"></i>Team
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#technology">
+											<i class="fas fa-microchip me-1"></i>Technology
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+						
+						<div>
+							<div class="header-row align-items-center">
+								<div class="tagline-enhanced me-4 d-none d-md-flex">
+									<i class="fas fa-eye"></i>
+									<span>AI-Powered Facial Emotion Recognition</span>
+								</div>
+								<div>
+									<a href="#demo" class="header-cta me-3">
+										<i class="fas fa-rocket me-2"></i>Try Demo
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div role="main" class="main">
+			<!-- Hero Section -->
+			<section id="demo" class="hero-section">
+				<div class="container container-xl-custom">
+					<div class="row align-items-center">
+						<div class="col-lg-6">
+							<div class="emotion-card">
+								<h1 class="font-weight-bold text-light mb-4" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="300">
+									Real-Time Emotion Detection
+								</h1>
+								<p class="text-light opacity-8 mb-4 lead" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="500">
+									Experience the power of artificial intelligence as our advanced deep learning model analyzes facial expressions in real-time to detect human emotions with remarkable accuracy.
+								</p>
+								
+								<div class="mb-4" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="700">
+									<h5 class="text-light mb-3">Detectable Emotions:</h5>
+									<span class="emotion-badge">😠 Angry</span>
+									<span class="emotion-badge">🤢 Disgust</span>
+									<span class="emotion-badge">😨 Fear</span>
+									<span class="emotion-badge">😊 Happy</span>
+									<span class="emotion-badge">😐 Neutral</span>
+									<span class="emotion-badge">😢 Sad</span>
+									<span class="emotion-badge">😲 Surprise</span>
+								</div>
+								
+								<button id="runButton" class="start-button" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="900">
+									<i class="fas fa-play me-2"></i>Start Detection
+								</button>
+							</div>
+						</div>
+						
+						<div class="col-lg-6" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="600">
+							<div class="text-center">
+								<div id="how-it-works" class="emotion-card">
+									<i class="fas fa-camera feature-icon"></i>
+									<h3 class="text-light mb-3">How It Works</h3>
+									<div class="text-light opacity-8">
+										<div class="mb-3">
+											<i class="fas fa-video text-warning me-2"></i>
+											<strong>Live Camera Feed:</strong> Uses your webcam for real-time analysis
+										</div>
+										<div class="mb-3">
+											<i class="fas fa-search text-info me-2"></i>
+											<strong>Face Detection:</strong> Identifies faces using Haar Cascade algorithms
+										</div>
+										<div class="mb-3">
+											<i class="fas fa-brain text-success me-2"></i>
+											<strong>AI Analysis:</strong> Deep learning model processes facial features
+										</div>
+										<div>
+											<i class="fas fa-chart-line text-danger me-2"></i>
+											<strong>Emotion Classification:</strong> Predicts emotions with confidence scores
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="section-divider"></div>
+
+			<!-- Technology Stack Section -->
+			<section id="technology" class="py-5">
+				<div class="container container-xl-custom">
+					<div class="row">
+						<div class="col-12 text-center mb-5">
+							<h2 class="font-weight-bold text-dark">Powered by Advanced Technologies</h2>
+							<p class="text-muted">Built using cutting-edge machine learning and computer vision technologies</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-sm-6 text-center mb-4">
+							<div class="feature-icon">
+								<i class="fab fa-python"></i>
+							</div>
+							<h4>Python</h4>
+							<p class="text-muted">Core programming language for AI development</p>
+						</div>
+						<div class="col-md-3 col-sm-6 text-center mb-4">
+							<div class="feature-icon">
+								<i class="fas fa-network-wired"></i>
+							</div>
+							<h4>TensorFlow/Keras</h4>
+							<p class="text-muted">Deep learning framework for neural networks</p>
+						</div>
+						<div class="col-md-3 col-sm-6 text-center mb-4">
+							<div class="feature-icon">
+								<i class="fas fa-eye"></i>
+							</div>
+							<h4>OpenCV</h4>
+							<p class="text-muted">Computer vision library for image processing</p>
+						</div>
+						<div class="col-md-3 col-sm-6 text-center mb-4">
+							<div class="feature-icon">
+								<i class="fas fa-server"></i>
+							</div>
+							<h4>Flask</h4>
+							<p class="text-muted">Web framework for the user interface</p>
+						</div>
+					</div>
+					
+					<div class="row mt-4">
+						<div class="col-12 text-center">
+							<h5 class="mb-3">Technologies Used:</h5>
+							<span class="tech-badge">CNN</span>
+							<span class="tech-badge">Haar Cascade</span>
+							<span class="tech-badge">Real-time Processing</span>
+							<span class="tech-badge">Computer Vision</span>
+							<span class="tech-badge">Deep Learning</span>
+							<span class="tech-badge">Image Recognition</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="section-divider"></div>
+
+			<!-- Team Section -->
+			<section id="team" class="py-5 bg-light">
+				<div class="container container-xl-custom">
+					<div class="row">
+						<div class="col-12 text-center mb-5">
+							<h2 class="font-weight-bold text-dark">Meet Our Development Team</h2>
+							<p class="text-muted">Passionate innovators from Bengaluru creating the future of AI</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 col-lg-3">
+							<div class="team-member text-center">
+								<div class="mb-3">
+									<i class="fas fa-user-circle fa-3x text-primary"></i>
+								</div>
+								<h5 class="font-weight-bold">Devesh Bhandari</h5>
+								<p class="text-muted mb-2">AI/ML Developer</p>
+								<small class="text-muted">Deep Learning Specialist</small>
+							</div>
+						</div>
+						<div class="col-md-6 col-lg-3">
+							<div class="team-member text-center">
+								<div class="mb-3">
+									<i class="fas fa-user-circle fa-3x text-success"></i>
+								</div>
+								<h5 class="font-weight-bold">Mohit Mehta</h5>
+								<p class="text-muted mb-2">Computer Vision Engineer</p>
+								<small class="text-muted">Image Processing Expert</small>
+							</div>
+						</div>
+						<div class="col-md-6 col-lg-3">
+							<div class="team-member text-center">
+								<div class="mb-3">
+									<i class="fas fa-user-circle fa-3x text-warning"></i>
+								</div>
+								<h5 class="font-weight-bold">Tyrell Fernandes</h5>
+								<p class="text-muted mb-2">Full Stack Developer</p>
+								<small class="text-muted">Web Development Lead</small>
+							</div>
+						</div>
+						<div class="col-md-6 col-lg-3">
+							<div class="team-member text-center">
+								<div class="mb-3">
+									<i class="fas fa-user-circle fa-3x text-info"></i>
+								</div>
+								<h5 class="font-weight-bold">Anjali Rai</h5>
+								<p class="text-muted mb-2">Data Scientist</p>
+								<small class="text-muted">Model Training Specialist</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="section-divider"></div>
+
+			<!-- Features Section -->
+			<section id="features" class="py-5">
+				<div class="container container-xl-custom">
+					<div class="row">
+						<div class="col-12 text-center mb-5">
+							<h2 class="font-weight-bold text-dark">Key Features</h2>
+							<p class="text-muted">Advanced capabilities that make our emotion detection system unique</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 mb-4">
+							<div class="text-center">
+								<i class="fas fa-bolt feature-icon text-warning"></i>
+								<h4>Real-Time Processing</h4>
+								<p class="text-muted">Instant emotion detection with minimal latency for smooth user experience</p>
+							</div>
+						</div>
+						<div class="col-md-4 mb-4">
+							<div class="text-center">
+								<i class="fas fa-chart-line feature-icon text-success"></i>
+								<h4>High Accuracy</h4>
+								<p class="text-muted">Trained on extensive datasets to achieve superior emotion recognition accuracy</p>
+							</div>
+						</div>
+						<div class="col-md-4 mb-4">
+							<div class="text-center">
+								<i class="fas fa-mobile-alt feature-icon text-info"></i>
+								<h4>Cross-Platform</h4>
+								<p class="text-muted">Works seamlessly across different devices and operating systems</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div> 
+	<!-- Vendor -->
+	<script>
+        document.getElementById('runButton').addEventListener('click', function() {
+            const button = this;
+            const originalText = button.innerHTML;
+            
+            // Show loading state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Starting Camera...';
+            button.disabled = true;
+            button.style.opacity = '0.7';
+            
+            // Show info modal
+            const userConfirm = confirm(
+                'This will start your camera for emotion detection.\n\n' +
+                'Instructions:\n' +
+                '• Allow camera access when prompted\n' +
+                '• The camera window will automatically appear\n' +
+                '• Look directly at the camera\n' +
+                '• To stop: Press ESC, Q, or click the X button\n' +
+                '• The detected emotion will appear above your face\n\n' +
+                'Click OK to continue.'
+            );
+            
+            if (!userConfirm) {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                button.style.opacity = '1';
+                return;
+            }
+            
+            fetch('/run_script')
+                .then(response => response.text())
+                .then(result => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                    
+                    if (result.includes('error') || result.includes('Error')) {
+                        alert('Error starting emotion detection:\n' + result + '\n\nPlease check if your camera is available and try again.');
+                    } else {
+                        alert('Emotion detection started successfully!\n\nThe camera window should have appeared automatically.\nIf you don\'t see it, check your taskbar or try clicking the button again.');
+                    }
+                })
+                .catch(error => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                    
+                    alert('Failed to start emotion detection:\n' + error + '\n\nPlease check your camera connection and try again.');
+                });
+        });
+
+        // Add smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading animation to the page
+            document.body.style.opacity = '0';
+            setTimeout(function() {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+	<!-- <script data-cfasync="false" src="{{ url_for('static', filename='../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script> -->
+	<script data-cfasync="false" src="static/../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.appear/jquery.appear.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.easing/jquery.easing.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.cookie/jquery.cookie.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.validation/jquery.validate.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/jquery.gmap/jquery.gmap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/lazysizes/lazysizes.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/isotope/jquery.isotope.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/owl.carousel/owl.carousel.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/vide/jquery.vide.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/vivus/vivus.min.js') }}"></script>
+	<!-- Theme Base, Components and Settings -->
+	<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+	<!-- Theme Initialization Files -->
+	<script src="{{ url_for('static', filename='js/theme.init.js') }}"></script>
+	
+	<!-- Enhanced Header JavaScript -->
+	<script>
+	$(document).ready(function() {
+		// Smooth scrolling for navigation links
+		$('.nav-enhanced .nav-link').on('click', function(e) {
+			e.preventDefault();
+			var target = $(this).attr('href');
+			if (target.startsWith('#')) {
+				$('html, body').animate({
+					scrollTop: $(target).offset().top - 100
+				}, 800);
+			}
+		});
+		
+		// Header background opacity on scroll
+		$(window).scroll(function() {
+			var scroll = $(window).scrollTop();
+			
+			if (scroll > 50) {
+				$('#header').addClass('scrolled');
+			} else {
+				$('#header').removeClass('scrolled');
+			}
+		});
+		
+		// Add scrolled class style with enhanced visibility
+		$('<style>')
+			.prop('type', 'text/css')
+			.html(`
+				.header-enhanced.scrolled {
+					background: rgba(102, 126, 234, 0.98) !important;
+					backdrop-filter: blur(20px);
+					box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+					border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+				}
+				
+				.header-enhanced.scrolled .logo-enhanced {
+					background: rgba(255, 255, 255, 0.15);
+					border: 1px solid rgba(255, 255, 255, 0.3);
+				}
+				
+				.header-enhanced.scrolled .nav-enhanced {
+					background: rgba(255, 255, 255, 0.2);
+					border: 1px solid rgba(255, 255, 255, 0.4);
+				}
+			`)
+			.appendTo('head');
+		
+		// Animate logo on hover
+		$('.logo-enhanced').hover(
+			function() {
+				$(this).find('i').addClass('fa-spin');
+			},
+			function() {
+				$(this).find('i').removeClass('fa-spin');
+			}
+		);
+		
+		// CTA button click handler
+		$('.header-cta').on('click', function(e) {
+			e.preventDefault();
+			$('html, body').animate({
+				scrollTop: $('.hero-section').offset().top
+			}, 800);
+		});
+	});
+	</script>
+	
+	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"6ccd776e1a404a1d","version":"2021.12.0","r":1,"token":"03fa3b9eb60b49789931c4694c153f9b","si":100}' crossorigin="anonymous"></script>
+</body>
+<!-- Mirrored from www.okler.net/previews/porto/9.3.0/index-portfolio.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Jan 2022 09:21:42 GMT -->
+
+</html>
